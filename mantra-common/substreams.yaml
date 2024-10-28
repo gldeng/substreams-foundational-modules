@@ -37,7 +37,7 @@ modules:
     use: injective:filtered_event_groups_by_attribute_value
 
 params:
-  filtered_events: "(type:message && attr:action)"
-  filtered_event_groups: "type:wasm && attr:_contract_address"
-  filtered_events_by_attribute_value: "type:wasm && attr:_contract_address:inj1v77y5ttah96dc9qkcpc88ad7rce8n88e99t3m5"
-  filtered_event_groups_by_attribute_value: "type:wasm && attr:_contract_address:inj1v77y5ttah96dc9qkcpc88ad7rce8n88e99t3m5"
+  filtered_events: "(type:rewards && attr:validator)"
+  filtered_event_groups: "type:rewards && attr:validator"
+  filtered_events_by_attribute_value: "type:rewards && attr:validator:mantravaloper18se5kq0z86pqfym8uuuqp77kyd788npj3wx7fc"
+  filtered_event_groups_by_attribute_value: "type:rewards && attr:validator:mantravaloper18se5kq0z86pqfym8uuuqp77kyd788npj3wx7fc"
