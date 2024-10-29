@@ -7,7 +7,7 @@ package:
 network: mantra-mainnet
 
 imports:
-  injective: https://spkg.io/streamingfast/injective-common-v0.2.3.spkg
+  cosmos: https://spkg.io/streamingfast/cosmos-common-v0.0.1.spkg
 
 modules:
   - name: all_events
