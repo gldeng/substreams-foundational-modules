@@ -134,6 +134,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "cosmos_common"
+version = "0.0.1"
+dependencies = [
+ "anyhow",
+ "cosmrs",
+ "getrandom",
+ "hex",
+ "prost 0.11.9",
+ "prost-types 0.11.9",
+ "sha2 0.10.8",
+ "substreams",
+]
+
+[[package]]
 name = "cosmrs"
 version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -506,20 +520,6 @@ checksum = "168fb715dda47215e360912c096649d23d58bf392ac62f73919e831745e40f26"
 dependencies = [
  "equivalent",
  "hashbrown",
-]
-
-[[package]]
-name = "injective_common"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "cosmrs",
- "getrandom",
- "hex",
- "prost 0.11.9",
- "prost-types 0.11.9",
- "sha2 0.10.8",
- "substreams",
 ]
 
 [[package]]

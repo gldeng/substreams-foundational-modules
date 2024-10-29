@@ -1,9 +1,16 @@
-# mantra-common
+# cosmos-common
 
-Common Mantra Substreams modules to extract events and transactions with indexing
-This package inherits from the generic Cosmos Foundational Modules.
+The Cosmos Foundational modules are Substreams modules extracting common data from different Cosmos blockchains (e.g. Injective or Mantra).
 
 ## Usage
+
+This module is a general Cosmos foundational module, so it can be run within any Cosmos blockchain. For example, to run it against the Injective endpoint:
+
+```bash
+substreams gui cosmos-common-v0.0.1.spkg all_events -e mainnet.injective.streamingfast.io:443
+```
+
+However, StreamingFast recommends using the blockchain-specific foundational modules specified (for example, `injective-common` for Injective or `mantra-common` for Mantra), instead of this generic Cosmos package.
 
 Usually, foundational modules are directly imported and used in other Substreams. All the official foundational modules are stored in [substreams.dev](`https://substreams.dev`).
 
@@ -14,30 +21,24 @@ package:
   version: v0.1.0
 
 imports:
-  mantra: https://spkg.io/streamingfast/mantra-common-v0.0.1.spkg # Import the package from substreams.dev
+  cosmos: https://spkg.io/streamingfast/cosmos-common-v0.0.1.spkg # Import the package from substreams.dev
 
 modules:
   - name: my_events # Define your Substreams module
-    use: mantra:filtered_events # Use the imported package
+    use: cosmos:filtered_events # Use the imported package
     initialBlock: 70000000
 
 params:
   my_events: "(type:message && attr:action) || (type:wasm && attr:_contract_address)" # Pass the filter as parameter to the module
 ```
 
-To run the Substreams:
-
-```bash
-substreams build
-substreams auth
-substreams gui
-```
+For a full example of importing the SPKG, take a look at the `derived-substreams.yaml` file, which defines a Substreams that imports the Cosmos foundational module.
 
 ## Modules
 
 ### all_events (map)
 
-Retrieves all the events in the Mantra blockchain without any filtering.
+Retrieves all the events in the Cosmos blockchain without any filtering.
 
 ### index_events (index)
 
@@ -77,7 +78,7 @@ The module reads from `all_events` and applies a filter on the event types, attr
 
 ```yaml
 params:
-    filtered_events_by_attribute_value: "type:rewards && attr:validator:mantravaloper18se5kq0z86pqfym8uuuqp77kyd788npj3wx7fc"
+    filtered_events_by_attribute_value: "type:rewards && attr:validator:any_validator"
 ```
 
 ### filtered_event_groups_by_attribute_value (map)
@@ -88,5 +89,5 @@ The module reads from `all_events` and applies a filter on the event types, attr
 
 ```yaml
 params:
-    filtered_event_groups_by_attribute_value: "type:rewards && attr:validator:mantravaloper18se5kq0z86pqfym8uuuqp77kyd788npj3wx7fc"
+    filtered_event_groups_by_attribute_value: "type:rewards && attr:validator:any_validator"
 ```
