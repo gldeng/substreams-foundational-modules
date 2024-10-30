@@ -1,13 +1,13 @@
 specVersion: v0.1.0
 package:
-  name: mantra_common
-  version: v0.0.1
+  name: injective_common
+  version: v0.2.4
   url: https://github.com/streamingfast/substreams-foundational-modules/injective-common
 
 network: injective-mainnet
 
 imports:
-  cosmos: https://spkg.io/streamingfast/cosmos-common-v0.0.1.spkg
+  cosmos: https://spkg.io/streamingfast/cosmos-common-v0.1.0.spkg
 
 modules:
   - name: all_events

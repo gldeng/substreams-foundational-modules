@@ -1,6 +1,6 @@
 # injective-common
 
-Common Mantra Substreams modules to extract events and transactions with indexing
+Common Injective Substreams modules to extract events and transactions with indexing
 This package inherits from the generic Cosmos Foundational Modules.
 
 ## Usage

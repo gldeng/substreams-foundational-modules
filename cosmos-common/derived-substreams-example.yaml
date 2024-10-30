@@ -10,7 +10,6 @@ imports:
 modules:
   - name: my_events
     use: cosmos:filtered_events_by_attribute_value
-    initialBlock: 70000000
     blockFilter:
       module: cosmos:index_events
       query:

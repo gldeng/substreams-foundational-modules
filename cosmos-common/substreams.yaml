@@ -2,10 +2,10 @@
 specVersion: v0.1.0
 package:
   name: cosmos_common
-  version: v0.0.1
+  version: v0.1.0
   url: https://github.com/streamingfast/substreams-foundational-modules/cosmos-common
   doc: |
-    Common Cosmos substreams modules to extract events and transactions with indexing
+    Common Cosmos Substreams modules to extract events and transactions with indexing
 
     Use one of those optimized modules with a query string as a parameter:
     * filtered_events
@@ -48,11 +48,7 @@ modules:
       - map: all_events
     output:
       type: proto:sf.substreams.index.v1.Keys
-    doc: |
-      `index_events` sets the keys corresponding to all event 'types' and 'attribute keys' in the block
-      ex: `type:coin_received`, `attr:action`, `attr:sender` ...
-      The attribute values are never indexed because they have a high cardinality and would be too expensive to index.
-
+  
   - name: filtered_events
     kind: map
     blockFilter:
@@ -64,11 +60,7 @@ modules:
       - map: all_events
     output:
       type: proto:sf.substreams.cosmos.v1.EventList
-    doc: |
-      `filtered_events` reads from `all_events` and applies a filter on the event types and attribute keys, 
-      only outputing the events that match the filter. 
-      Example usage: `(type:message && attr:action) || (type:wasm && attr:_contract_address)`
-
+    
   - name: filtered_event_groups
     kind: map
     blockFilter:
@@ -80,11 +72,7 @@ modules:
       - map: all_events
     output:
       type: proto:sf.substreams.cosmos.v1.EventList
-    doc: |
-      `filtered_event_groups` reads from `all_events` and applies a filter on the event types and attribute keys, 
-      outputing all the events from transactions that have at least one event matching the filter.
-      Example usage: `type:message || (type:wasm && attr:_contract_address)`
-
+    
   - name: filtered_events_by_attribute_value
     kind: map
     inputs:
@@ -92,14 +80,7 @@ modules:
       - map: all_events
     output:
       type: proto:sf.substreams.cosmos.v1.EventList
-    doc: |
-      `filtered_events_by_attribute_value` reads from `all_events` and applies a filter on the event types, attribute keys and values,
-      only outputing the events that match the filter. 
-      Example usage: "type:wasm && attr:_contract_address:inj1v77y5ttah96dc9qkcpc88ad7rce8n88e99t3m5"
-
-      To use this module with an index, import it and override it with the `use:` parameter, setting blockFilter.Query.String to a query
-      that matches the event type and attribute keys only (ex: `type:wasm && attr:_contract_address`)
-
+    
   - name: filtered_event_groups_by_attribute_value
     kind: map
     inputs:
@@ -107,14 +88,7 @@ modules:
       - map: all_events
     output:
       type: proto:sf.substreams.cosmos.v1.EventList
-    doc: |
-      `filtered_events_groups_by_attribute_value` reads from `all_events` and applies a filter on the event types, attribute keys and values,
-      outputing all the events from transactions that have at least one event matching the filter.
-      Example usage: "type:wasm && attr:_contract_address:inj1v77y5ttah96dc9qkcpc88ad7rce8n88e99t3m5"
-
-      To use this module with an index, import it and override it with the `use:` parameter, setting blockFilter.Query.String to a query
-      that matches the event type and attribute keys only (ex: `type:wasm && attr:_contract_address`)
-
+    
 params:
   filtered_events: "(type:message && attr:action) || (type:wasm && attr:_contract_address)"
   filtered_event_groups: "type:wasm && attr:_contract_address"
