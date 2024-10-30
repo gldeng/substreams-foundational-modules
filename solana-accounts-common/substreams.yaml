@@ -1,7 +1,7 @@
 specVersion: v0.1.0
 package:
   name: solana_accounts_foundational
-  version: v0.0.1
+  version: v0.0.2
 
 binaries:
   default:
@@ -9,6 +9,18 @@ binaries:
     file: ./main.wasm
 
 network: sol-mainnet
+
+protobuf:
+  files:
+    - type.proto
+  importPaths:
+    - ./proto/sf/substreams/solana/type/v1
+  descriptorSets:
+    - module: buf.build/streamingfast/solana-accounts
+    - module: buf.build/streamingfast/substreams
+  excludePaths:
+    - google
+    - sf/substreams/firehose
 
 modules:
   - name: index_accounts
