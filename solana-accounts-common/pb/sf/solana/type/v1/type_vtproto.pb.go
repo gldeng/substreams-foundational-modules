@@ -31,7 +31,6 @@ func (m *AccountBlock) CloneVT() *AccountBlock {
 	r.Hash = m.Hash
 	r.ParentSlot = m.ParentSlot
 	r.ParentHash = m.ParentHash
-	r.Lib = m.Lib
 	r.Timestamp = (*timestamppb.Timestamp)((*timestamppb1.Timestamp)(m.Timestamp).CloneVT())
 	if rhs := m.Accounts; rhs != nil {
 		tmpContainer := make([]*Account, len(rhs))
@@ -56,9 +55,7 @@ func (m *Account) CloneVT() *Account {
 		return (*Account)(nil)
 	}
 	r := new(Account)
-	r.SourceSlot = m.SourceSlot
-	r.RentEpoch = m.RentEpoch
-	r.WriteVersion = m.WriteVersion
+	r.Deleted = m.Deleted
 	if rhs := m.Address; rhs != nil {
 		tmpBytes := make([]byte, len(rhs))
 		copy(tmpBytes, rhs)
@@ -101,9 +98,6 @@ func (this *AccountBlock) EqualVT(that *AccountBlock) bool {
 		return false
 	}
 	if this.ParentHash != that.ParentHash {
-		return false
-	}
-	if this.Lib != that.Lib {
 		return false
 	}
 	if !(*timestamppb1.Timestamp)(this.Timestamp).EqualVT((*timestamppb1.Timestamp)(that.Timestamp)) {
@@ -151,13 +145,7 @@ func (this *Account) EqualVT(that *Account) bool {
 	if string(this.Data) != string(that.Data) {
 		return false
 	}
-	if this.SourceSlot != that.SourceSlot {
-		return false
-	}
-	if this.RentEpoch != that.RentEpoch {
-		return false
-	}
-	if this.WriteVersion != that.WriteVersion {
+	if this.Deleted != that.Deleted {
 		return false
 	}
 	return string(this.unknownFields) == string(that.unknownFields)
@@ -222,11 +210,6 @@ func (m *AccountBlock) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x32
 	}
-	if m.Lib != 0 {
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Lib))
-		i--
-		dAtA[i] = 0x28
-	}
 	if len(m.ParentHash) > 0 {
 		i -= len(m.ParentHash)
 		copy(dAtA[i:], m.ParentHash)
@@ -284,20 +267,15 @@ func (m *Account) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if m.WriteVersion != 0 {
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.WriteVersion))
+	if m.Deleted {
 		i--
-		dAtA[i] = 0x30
-	}
-	if m.RentEpoch != 0 {
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.RentEpoch))
+		if m.Deleted {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
 		i--
-		dAtA[i] = 0x28
-	}
-	if m.SourceSlot != 0 {
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.SourceSlot))
-		i--
-		dAtA[i] = 0x20
+		dAtA[i] = 0x38
 	}
 	if len(m.Data) > 0 {
 		i -= len(m.Data)
@@ -375,11 +353,6 @@ func (m *AccountBlock) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		i--
 		dAtA[i] = 0x32
 	}
-	if m.Lib != 0 {
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.Lib))
-		i--
-		dAtA[i] = 0x28
-	}
 	if len(m.ParentHash) > 0 {
 		i -= len(m.ParentHash)
 		copy(dAtA[i:], m.ParentHash)
@@ -437,20 +410,15 @@ func (m *Account) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error) {
 		i -= len(m.unknownFields)
 		copy(dAtA[i:], m.unknownFields)
 	}
-	if m.WriteVersion != 0 {
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.WriteVersion))
+	if m.Deleted {
 		i--
-		dAtA[i] = 0x30
-	}
-	if m.RentEpoch != 0 {
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.RentEpoch))
+		if m.Deleted {
+			dAtA[i] = 1
+		} else {
+			dAtA[i] = 0
+		}
 		i--
-		dAtA[i] = 0x28
-	}
-	if m.SourceSlot != 0 {
-		i = protohelpers.EncodeVarint(dAtA, i, uint64(m.SourceSlot))
-		i--
-		dAtA[i] = 0x20
+		dAtA[i] = 0x38
 	}
 	if len(m.Data) > 0 {
 		i -= len(m.Data)
@@ -496,9 +464,6 @@ func (m *AccountBlock) SizeVT() (n int) {
 	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
-	if m.Lib != 0 {
-		n += 1 + protohelpers.SizeOfVarint(uint64(m.Lib))
-	}
 	if m.Timestamp != nil {
 		l = (*timestamppb1.Timestamp)(m.Timestamp).SizeVT()
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
@@ -531,14 +496,8 @@ func (m *Account) SizeVT() (n int) {
 	if l > 0 {
 		n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 	}
-	if m.SourceSlot != 0 {
-		n += 1 + protohelpers.SizeOfVarint(uint64(m.SourceSlot))
-	}
-	if m.RentEpoch != 0 {
-		n += 1 + protohelpers.SizeOfVarint(uint64(m.RentEpoch))
-	}
-	if m.WriteVersion != 0 {
-		n += 1 + protohelpers.SizeOfVarint(uint64(m.WriteVersion))
+	if m.Deleted {
+		n += 2
 	}
 	n += len(m.unknownFields)
 	return n
@@ -675,25 +634,6 @@ func (m *AccountBlock) UnmarshalVT(dAtA []byte) error {
 			}
 			m.ParentHash = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
-		case 5:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Lib", wireType)
-			}
-			m.Lib = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protohelpers.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Lib |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
 		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Timestamp", wireType)
@@ -917,11 +857,11 @@ func (m *Account) UnmarshalVT(dAtA []byte) error {
 				m.Data = []byte{}
 			}
 			iNdEx = postIndex
-		case 4:
+		case 7:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field SourceSlot", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Deleted", wireType)
 			}
-			m.SourceSlot = 0
+			var v int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return protohelpers.ErrIntOverflow
@@ -931,49 +871,12 @@ func (m *Account) UnmarshalVT(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.SourceSlot |= uint64(b&0x7F) << shift
+				v |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-		case 5:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RentEpoch", wireType)
-			}
-			m.RentEpoch = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protohelpers.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.RentEpoch |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 6:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field WriteVersion", wireType)
-			}
-			m.WriteVersion = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protohelpers.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.WriteVersion |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
+			m.Deleted = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
@@ -1135,25 +1038,6 @@ func (m *AccountBlock) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			m.ParentHash = stringValue
 			iNdEx = postIndex
-		case 5:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Lib", wireType)
-			}
-			m.Lib = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protohelpers.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.Lib |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
 		case 6:
 			if wireType != 2 {
 				return fmt.Errorf("proto: wrong wireType = %d for field Timestamp", wireType)
@@ -1368,11 +1252,11 @@ func (m *Account) UnmarshalVTUnsafe(dAtA []byte) error {
 			}
 			m.Data = dAtA[iNdEx:postIndex]
 			iNdEx = postIndex
-		case 4:
+		case 7:
 			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field SourceSlot", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Deleted", wireType)
 			}
-			m.SourceSlot = 0
+			var v int
 			for shift := uint(0); ; shift += 7 {
 				if shift >= 64 {
 					return protohelpers.ErrIntOverflow
@@ -1382,49 +1266,12 @@ func (m *Account) UnmarshalVTUnsafe(dAtA []byte) error {
 				}
 				b := dAtA[iNdEx]
 				iNdEx++
-				m.SourceSlot |= uint64(b&0x7F) << shift
+				v |= int(b&0x7F) << shift
 				if b < 0x80 {
 					break
 				}
 			}
-		case 5:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field RentEpoch", wireType)
-			}
-			m.RentEpoch = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protohelpers.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.RentEpoch |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
-		case 6:
-			if wireType != 0 {
-				return fmt.Errorf("proto: wrong wireType = %d for field WriteVersion", wireType)
-			}
-			m.WriteVersion = 0
-			for shift := uint(0); ; shift += 7 {
-				if shift >= 64 {
-					return protohelpers.ErrIntOverflow
-				}
-				if iNdEx >= l {
-					return io.ErrUnexpectedEOF
-				}
-				b := dAtA[iNdEx]
-				iNdEx++
-				m.WriteVersion |= uint64(b&0x7F) << shift
-				if b < 0x80 {
-					break
-				}
-			}
+			m.Deleted = bool(v != 0)
 		default:
 			iNdEx = preIndex
 			skippy, err := protohelpers.Skip(dAtA[iNdEx:])
