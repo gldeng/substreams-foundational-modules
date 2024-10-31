@@ -1,6 +1,6 @@
-# injective-common
+# mantra-common
 
-Common Injective Substreams modules to extract events and transactions with indexing
+Common Mantra Substreams modules to extract events and transactions with indexing
 This package inherits from the generic Cosmos Foundational Modules.
 
 ## Usage
@@ -14,11 +14,11 @@ package:
   version: v0.1.0
 
 imports:
-  injective: https://spkg.io/streamingfast/injective-common-v0.2.4.spkg # Import the package from substreams.dev
+  mantra: https://spkg.io/streamingfast/mantra-common-v0.1.0.spkg # Import the package from substreams.dev
 
 modules:
   - name: my_events # Define your Substreams module
-    use: injective:filtered_events # Use the imported package
+    use: mantra:filtered_events # Use the imported package
     initialBlock: 70000000
 
 params:
@@ -37,7 +37,7 @@ substreams gui
 
 ### all_events (map)
 
-Retrieves all the events in the Injective blockchain without any filtering.
+Retrieves all the events in the Mantra blockchain without any filtering.
 
 ### index_events (index)
 
@@ -77,7 +77,7 @@ The module reads from `all_events` and applies a filter on the event types, attr
 
 ```yaml
 params:
-    filtered_events_by_attribute_value: "type:wasm && attr:_contract_address:inj1v77y5ttah96dc9qkcpc88ad7rce8n88e99t3m5"
+    filtered_events_by_attribute_value: "type:rewards && attr:validator:mantravaloper18se5kq0z86pqfym8uuuqp77kyd788npj3wx7fc"
 ```
 
 ### filtered_event_groups_by_attribute_value (map)
@@ -88,5 +88,5 @@ The module reads from `all_events` and applies a filter on the event types, attr
 
 ```yaml
 params:
-    filtered_event_groups_by_attribute_value: "type:wasm && attr:_contract_address:inj1v77y5ttah96dc9qkcpc88ad7rce8n88e99t3m5"
+    filtered_event_groups_by_attribute_value: "type:rewards && attr:validator:mantravaloper18se5kq0z86pqfym8uuuqp77kyd788npj3wx7fc"
 ```
