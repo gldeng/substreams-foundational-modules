@@ -1,7 +1,7 @@
 specVersion: v0.1.0
 package:
   name: solana_accounts_foundational
-  version: v0.0.2
+  version: v0.0.3
 
 binaries:
   default:
