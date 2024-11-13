@@ -28,7 +28,11 @@ func (m *FilteredAccounts) CloneVT() *FilteredAccounts {
 	if rhs := m.Accounts; rhs != nil {
 		tmpContainer := make([]*v1.Account, len(rhs))
 		for k, v := range rhs {
-			tmpContainer[k] = v.CloneVT()
+			if vtpb, ok := interface{}(v).(interface{ CloneVT() *v1.Account }); ok {
+				tmpContainer[k] = vtpb.CloneVT()
+			} else {
+				tmpContainer[k] = proto.Clone(v).(*v1.Account)
+			}
 		}
 		r.Accounts = tmpContainer
 	}
@@ -61,7 +65,11 @@ func (this *FilteredAccounts) EqualVT(that *FilteredAccounts) bool {
 			if q == nil {
 				q = &v1.Account{}
 			}
-			if !p.EqualVT(q) {
+			if equal, ok := interface{}(p).(interface{ EqualVT(*v1.Account) bool }); ok {
+				if !equal.EqualVT(q) {
+					return false
+				}
+			} else if !proto.Equal(p, q) {
 				return false
 			}
 		}
@@ -108,12 +116,24 @@ func (m *FilteredAccounts) MarshalToSizedBufferVT(dAtA []byte) (int, error) {
 	}
 	if len(m.Accounts) > 0 {
 		for iNdEx := len(m.Accounts) - 1; iNdEx >= 0; iNdEx-- {
-			size, err := m.Accounts[iNdEx].MarshalToSizedBufferVT(dAtA[:i])
-			if err != nil {
-				return 0, err
+			if vtmsg, ok := interface{}(m.Accounts[iNdEx]).(interface {
+				MarshalToSizedBufferVT([]byte) (int, error)
+			}); ok {
+				size, err := vtmsg.MarshalToSizedBufferVT(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			} else {
+				encoded, err := proto.Marshal(m.Accounts[iNdEx])
+				if err != nil {
+					return 0, err
+				}
+				i -= len(encoded)
+				copy(dAtA[i:], encoded)
+				i = protohelpers.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			i -= size
-			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 			i--
 			dAtA[i] = 0xa
 		}
@@ -153,12 +173,24 @@ func (m *FilteredAccounts) MarshalToSizedBufferVTStrict(dAtA []byte) (int, error
 	}
 	if len(m.Accounts) > 0 {
 		for iNdEx := len(m.Accounts) - 1; iNdEx >= 0; iNdEx-- {
-			size, err := m.Accounts[iNdEx].MarshalToSizedBufferVTStrict(dAtA[:i])
-			if err != nil {
-				return 0, err
+			if vtmsg, ok := interface{}(m.Accounts[iNdEx]).(interface {
+				MarshalToSizedBufferVTStrict([]byte) (int, error)
+			}); ok {
+				size, err := vtmsg.MarshalToSizedBufferVTStrict(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
+			} else {
+				encoded, err := proto.Marshal(m.Accounts[iNdEx])
+				if err != nil {
+					return 0, err
+				}
+				i -= len(encoded)
+				copy(dAtA[i:], encoded)
+				i = protohelpers.EncodeVarint(dAtA, i, uint64(len(encoded)))
 			}
-			i -= size
-			i = protohelpers.EncodeVarint(dAtA, i, uint64(size))
 			i--
 			dAtA[i] = 0xa
 		}
@@ -174,7 +206,13 @@ func (m *FilteredAccounts) SizeVT() (n int) {
 	_ = l
 	if len(m.Accounts) > 0 {
 		for _, e := range m.Accounts {
-			l = e.SizeVT()
+			if size, ok := interface{}(e).(interface {
+				SizeVT() int
+			}); ok {
+				l = size.SizeVT()
+			} else {
+				l = proto.Size(e)
+			}
 			n += 1 + l + protohelpers.SizeOfVarint(uint64(l))
 		}
 	}
@@ -241,8 +279,16 @@ func (m *FilteredAccounts) UnmarshalVT(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Accounts = append(m.Accounts, &v1.Account{})
-			if err := m.Accounts[len(m.Accounts)-1].UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.Accounts[len(m.Accounts)-1]).(interface {
+				UnmarshalVT([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVT(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Accounts[len(m.Accounts)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		default:
@@ -326,8 +372,16 @@ func (m *FilteredAccounts) UnmarshalVTUnsafe(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Accounts = append(m.Accounts, &v1.Account{})
-			if err := m.Accounts[len(m.Accounts)-1].UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
-				return err
+			if unmarshal, ok := interface{}(m.Accounts[len(m.Accounts)-1]).(interface {
+				UnmarshalVTUnsafe([]byte) error
+			}); ok {
+				if err := unmarshal.UnmarshalVTUnsafe(dAtA[iNdEx:postIndex]); err != nil {
+					return err
+				}
+			} else {
+				if err := proto.Unmarshal(dAtA[iNdEx:postIndex], m.Accounts[len(m.Accounts)-1]); err != nil {
+					return err
+				}
 			}
 			iNdEx = postIndex
 		default:

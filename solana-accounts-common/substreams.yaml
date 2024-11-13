@@ -1,14 +1,18 @@
 specVersion: v0.1.0
 package:
   name: solana_accounts_foundational
-  version: v0.0.3
+  version: v0.0.4
+  url: https://github.com/streamingfast/substreams-foundational-modules
+  image: solana.png
+  description: Foundational (common) module for fetching solana account changes
 
 binaries:
   default:
     type: wasip1/tinygo-v1
     file: ./main.wasm
 
-network: sol-mainnet
+# note: this is a different endpoint than solana-mainnet, with a different block type
+network: solana-accounts-mainnet
 
 protobuf:
   files:
@@ -16,7 +20,7 @@ protobuf:
   importPaths:
     - ./proto/sf/substreams/solana/type/v1
   descriptorSets:
-    - module: buf.build/streamingfast/solana-accounts
+    - module: buf.build/streamingfast/firehose-solana
     - module: buf.build/streamingfast/substreams
   excludePaths:
     - google
@@ -46,4 +50,4 @@ modules:
       type: proto:sf.substreams.solana.type.v1.FilteredAccounts
 
 params: # Default parameters. You can override these parameters based on your needs.
-  filtered_accounts: "address:AwjomjhbNqkgEZN1ADvbEcTYsDfBuX4AKzNmxwgtKvxM"
+  filtered_accounts: "owner:TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"

@@ -8,9 +8,9 @@ deps:
     digest: shake256:b0f2d94a4fed1cea285d685397f49e35a1fa91a36d05b4aee0bfd146cb1b28d1de47ec8b1bda11e6ed06e6c6cf85b2d20a70fcdd289161f2d01f8154e780ce40
   - remote: buf.build
     owner: streamingfast
-    repository: solana-accounts
-    commit: b7edbab24d5a4a9db980eabe34cf3c73
-    digest: shake256:5b6e02bd08ce570c28d94ed031e38290c1f256df43a13557927781e955d5c63752718ddc109ee622d10bbeec4b76d6ef38c2f5a5f66899b99c2f7799a8bbbe26
+    repository: firehose-solana
+    commit: 8285ba4ea95148948ba4eb562cd334cd
+    digest: shake256:02d3bdae777b707a5b855253bffe703ce1112b7b176d65043dd5bf661a84d13d8a0d38d48430831dff28b1d5995e82f670c753b63c419ff3e3e4eec1c61850aa
   - remote: buf.build
     owner: streamingfast
     repository: substreams
