@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package sf.substreams.aelf.v1;
+
+message StateUpdate {
+    string tx_id = 1;
+    string key = 2;
+    bytes value = 3;
+}
+
+message StateUpdates {
+    repeated StateUpdate updates = 1;
+}

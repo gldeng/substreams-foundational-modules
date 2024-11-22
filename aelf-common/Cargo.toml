@@ -1,0 +1,27 @@
+[package]
+name = "aelf-common"
+version = "0.1.0"
+edition = "2021"
+description = "Substreams showcasing the building blocks of AElf"
+repository = "https://github.com/streamingfast/substreams-foundational-modules/aelf-common"
+license = "Apache 2.0"
+
+[lib]
+name = "substreams"
+crate-type = ["cdylib"]
+
+[dependencies]
+hex-literal = "0.3.4"
+num-bigint = "0.4"
+num-traits = "0.2.15"
+prost = "0.13.3"
+prost-types = "0.13.3"
+substreams = "0.6.0"
+substreams-aelf = { git = "https://github.com/gldeng/substreams-aelf.git", package = "substreams-aelf", branch = "main" }
+substreams-aelf-core = { git = "https://github.com/gldeng/substreams-aelf.git", package = "substreams-aelf-core", branch = "main" }
+substreams-database-change = "1"
+substreams-entity-change = "1"
+anyhow = "1.0.93"
+
+[target.wasm32-unknown-unknown.dependencies]
+getrandom = { version = "0.2", features = ["custom"] }

@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package sf.substreams.aelf.v1;
+
+import 'sf/substreams/v1/clock.proto';
+import 'sf/aelf/type/v1/type.proto';
+
+message Transactions {
+  sf.substreams.v1.Clock clock = 1;
+  repeated sf.aelf.type.v1.TransactionTrace transactions = 2;
+}

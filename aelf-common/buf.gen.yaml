@@ -1,0 +1,14 @@
+version: v1
+plugins:
+- plugin: buf.build/community/neoeinstein-prost:v0.4.0
+  out: src/pb
+  opt:
+    - file_descriptor_set=false
+    - extern_path=.sf.substreams.v1=::substreams::pb::substreams
+    - extern_path=.sf.aelf.type.v1=::substreams_aelf::pb::aelf::v1
+
+- plugin: buf.build/community/neoeinstein-prost-crate:v0.4.1
+  out: src/pb
+  opt:
+    - no_features
+    - only_include=.sf.substreams

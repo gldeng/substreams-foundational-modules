@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package sf.substreams.aelf.v1;
+
+import 'sf/substreams/v1/clock.proto';
+import 'sf/aelf/type/v1/type.proto';
+
+message Events {
+  .sf.substreams.v1.Clock clock = 1;
+  repeated Event events = 2;
+  reserved 3; // for cross-compatibility with Call message
+}
+
+message Event {
+  .sf.aelf.type.v1.LogEvent log = 1;
+  string tx_id = 2;
+}

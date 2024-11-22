@@ -1,0 +1,104 @@
+specVersion: v0.1.0
+package:
+  name: aelf_common
+  version: v0.1.0
+
+imports:
+  aelf: aelf-v1.0.0.spkg
+
+protobuf:
+  files:
+    - sf/substreams/aelf/v1/event.proto
+    - sf/substreams/aelf/v1/state.proto
+    - sf/substreams/aelf/v1/transaction.proto
+  importPaths:
+    - ./proto
+  excludePaths:
+    - aelf
+    - sf/aelf/type/v1
+    - sf/substreams/rpc
+    - sf/substreams/v1
+    - sf/substreams/sink
+    - sf/substreams/index
+    - sf/substreams/index/v1
+    - google
+
+binaries:
+  default:
+    type: wasm/rust-v1
+    file: ./target/wasm32-unknown-unknown/release/substreams.wasm
+
+modules:
+  - name: all_transactions
+    kind: map
+    doc: Extracts all transactions
+    initialBlock: 1
+    inputs:
+      - source: sf.aelf.type.v1.Block
+    output:
+      type: proto:sf.substreams.aelf.v1.Transactions
+
+  - name: filtered_transactions
+    kind: map
+    inputs:
+      - params: string
+      - map: all_transactions
+    output:
+      type: proto:sf.substreams.aelf.v1.Transactions
+    doc: |
+      `filtered_transactions` reads from `all_transactions` and applies a filter on the transactions.
+      Supported operators are: logical or `||`, logical and `&&` and parenthesis: `()`
+      Use the following supported patterns `call_from:...`, `call_to:...`, `call_method:...`,
+      `main_call_from:...`, `main_call_to:...` and `main_call_method:...`.
+      Example: `call_to:JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE && call_method:Transfer`
+
+  - name: all_events
+    kind: map
+    doc: Extracts all events
+    initialBlock: 1
+    inputs:
+      - source: sf.aelf.type.v1.Block
+    output:
+      type: proto:sf.substreams.aelf.v1.Events
+
+  - name: filtered_events
+    kind: map
+    inputs:
+      - params: string
+      - map: all_events
+    output:
+      type: proto:sf.substreams.aelf.v1.Events
+    doc: |
+      `filtered_events` reads from `all_events` and applies a filter on the events.
+      Supported operators are: logical or `||`, logical and `&&` and parenthesis: `()`
+      Use pattern `evt_addr:...` and `evt_name:...` to filter the events.
+      Example: `evt_addr:JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE && evt_name:Transferred`
+
+  - name: all_state_updates
+    kind: map
+    doc: Extracts state updates
+    initialBlock: 1
+    inputs:
+      - source: sf.aelf.type.v1.Block
+    output:
+      type: proto:sf.substreams.aelf.v1.StateUpdates
+
+  - name: filtered_state_updates
+    kind: map
+    inputs:
+      - params: string
+      - map: all_state_updates
+    output:
+      type: proto:sf.substreams.aelf.v1.StateUpdates
+    doc: |
+      `filtered_state_updates` reads from `all_state_updates` and applies a filter on the state paths.
+      Supported operators are: logical or `||`, logical and `&&` and parenthesis: `()`
+      Use pattern `st_<x>` as the prefix where x is the index of the state path.
+      Example: `st_0:JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE && st_1:Balances`
+
+params:
+  filtered_transactions: "call_to:JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE && call_method:Transfer"
+  filtered_events: "evt_addr:JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE && evt_name:Transferred"
+  filtered_state_updates: "st_0:JRmBduh4nXWi1aXgdUsj5gJrzeZb2LxmrAbf7W99faZSvoAaE && st_1:Balances"
+
+network: aelf
