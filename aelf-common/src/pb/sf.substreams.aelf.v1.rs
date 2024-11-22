@@ -29,7 +29,9 @@ pub struct StateUpdate {
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StateUpdates {
-    #[prost(message, repeated, tag="1")]
+    #[prost(message, optional, tag="1")]
+    pub clock: ::core::option::Option<::substreams::pb::substreams::Clock>,
+    #[prost(message, repeated, tag="2")]
     pub updates: ::prost::alloc::vec::Vec<StateUpdate>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]

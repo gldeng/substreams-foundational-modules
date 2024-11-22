@@ -2,6 +2,7 @@ use substreams::errors::Error;
 use substreams::matches_keys_in_parsed_expr;
 
 use anyhow::Result;
+use substreams::pb::substreams::Clock;
 
 use crate::pb::sf::substreams::aelf::v1::{StateUpdate, StateUpdates};
 use substreams_aelf_core::pb::aelf::v1::Block;
@@ -22,7 +23,12 @@ fn all_state_updates(blk: Block) -> Result<StateUpdates, Error> {
         })
     }).collect();
     Ok(StateUpdates {
-        updates
+        updates,
+        clock: Some(Clock {
+            id: blk.block_hash,
+            number: blk.height as u64,
+            timestamp: blk.header.unwrap().time,
+        }),
     })
 }
 
@@ -30,7 +36,8 @@ fn all_state_updates(blk: Block) -> Result<StateUpdates, Error> {
 fn filtered_state_updates(query: String, state_updates: StateUpdates) -> Result<StateUpdates, Error> {
     let filtered = state_updates.updates.into_iter().filter(|s| state_matches(s, &query).unwrap_or(false)).collect();
     Ok(StateUpdates {
-        updates: filtered
+        updates: filtered,
+        clock: state_updates.clock,
     })
 }
 
