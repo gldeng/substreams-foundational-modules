@@ -39,6 +39,6 @@ pub fn state_matches(state_update: &StateUpdate, query: &str) -> Result<bool, Er
 }
 
 pub fn state_keys(state_update: &StateUpdate) -> Vec<String> {
-    state_update.key.split("/").enumerate()
+    state_update.key.split('/').enumerate()
         .map(|(i, part)| format!("st_{}:{}", i, part)).collect()
 }
