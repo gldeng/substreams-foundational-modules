@@ -4,7 +4,7 @@ package:
   version: v0.1.0
 
 imports:
-  aelf: aelf-v1.0.0.spkg
+  aelf: https://github.com/gldeng/firehose-aelf/releases/download/v1.0.0-preview.1/aelf-v1.0.0-preview.1.spkg
 
 protobuf:
   files:
