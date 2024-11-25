@@ -5,9 +5,10 @@ package sf.substreams.aelf.v1;
 import 'sf/substreams/v1/clock.proto';
 
 message StateUpdate {
-    string tx_id = 1;
-    string key = 2;
-    bytes value = 3;
+    string key = 1;
+    bytes value = 2;
+    string tx_id = 3;
+    string call_path = 4;
 }
 
 message StateUpdates {

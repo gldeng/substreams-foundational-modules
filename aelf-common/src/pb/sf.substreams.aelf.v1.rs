@@ -15,16 +15,20 @@ pub struct Event {
     pub log: ::core::option::Option<::substreams_aelf::pb::aelf::v1::LogEvent>,
     #[prost(string, tag="2")]
     pub tx_id: ::prost::alloc::string::String,
+    #[prost(string, tag="3")]
+    pub call_path: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct StateUpdate {
     #[prost(string, tag="1")]
-    pub tx_id: ::prost::alloc::string::String,
-    #[prost(string, tag="2")]
     pub key: ::prost::alloc::string::String,
-    #[prost(bytes="vec", tag="3")]
+    #[prost(bytes="vec", tag="2")]
     pub value: ::prost::alloc::vec::Vec<u8>,
+    #[prost(string, tag="3")]
+    pub tx_id: ::prost::alloc::string::String,
+    #[prost(string, tag="4")]
+    pub call_path: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

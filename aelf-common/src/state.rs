@@ -12,12 +12,15 @@ fn all_state_updates(blk: Block) -> Result<StateUpdates, Error> {
     let updates: Vec<StateUpdate> = blk.transaction_traces.iter().flat_map(|tx| {
         tx.calls.iter().filter(|call| !call.is_reverted).flat_map(|call| {
             let tx_id = call.transaction_id.clone();
+            let call_path = call.call_path.clone();
             call.state_set.iter().flat_map(move |s| s.writes.iter().map({
                 let tx_id = tx_id.clone();
+                let call_path = call_path.clone();
                 move |(k, v)| StateUpdate {
-                    tx_id: tx_id.clone(),
                     key: k.to_string(),
                     value: v.clone(),
+                    tx_id: tx_id.clone(),
+                    call_path: call_path.clone(),
                 }
             }))
         })

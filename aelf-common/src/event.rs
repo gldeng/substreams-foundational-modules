@@ -9,12 +9,14 @@ fn all_events(blk: Block) -> Result<Events, Error> {
     let events: Vec<Event> = blk.transaction_traces.iter().flat_map(|trace| {
         trace.calls.iter().filter(|call| !call.is_reverted).flat_map(|call| {
             let tx_id = call.transaction_id.clone();
+            let call_path = call.call_path.clone();
             call.logs.iter().map(
                 {
                     let tx_id = tx_id.clone();
                     move |log| Event {
                         log: Some(log.clone()),
                         tx_id: tx_id.clone(),
+                        call_path: call_path.clone(),
                     }
                 })
         })
