@@ -32,7 +32,6 @@ modules:
   - name: all_transactions
     kind: map
     doc: Extracts all transactions
-    initialBlock: 1
     inputs:
       - source: sf.aelf.type.v1.Block
     output:
@@ -55,7 +54,6 @@ modules:
   - name: all_events
     kind: map
     doc: Extracts all events
-    initialBlock: 1
     inputs:
       - source: sf.aelf.type.v1.Block
     output:
@@ -77,7 +75,6 @@ modules:
   - name: all_state_updates
     kind: map
     doc: Extracts state updates
-    initialBlock: 1
     inputs:
       - source: sf.aelf.type.v1.Block
     output:
